@@ -1,12 +1,6 @@
 import pandas
 import random
 
-# Set Max tickets to 50 and tickets sold to zero
-max_tickets = 50
-sold_tickets = 0
-
-all_names, all_ticket_costs, all_ages, all_surcharge, all_payments = [], [], [], [], []
-
 
 # Turn floats into currency format
 def currency(x):
@@ -60,11 +54,28 @@ def choice_checker(question, chosen_valid=("yes", "no"), error="Pick yes or no",
 
 
 # Asks user if they want instructions
-if choice_checker("Do you want to see the instructions" ) == "yes":
-    print("{instructions}")
+if choice_checker("Do you want to see the instructions") == "yes":
+    print("For each ticket enter:"
+          "\n- The persons name (Can't be blank."
+          "\n- Age between 12 & 120."
+          "\n- Payment method (Cash/Credit)."
+          "\n"
+          "\nWhen you have entered all the users enter 'xxx' to quit."
+          "\n\n"
+          "The program will display all users Ticket details, "
+          "including the cost of each ticket and the total cost and total profit"
+          "\n\033[0;37;1mWe keep your data saved in a unsecure text file"
+          "\033[0;0;2m")
 print()
 
 # Main loop
+
+# Set Max tickets to 50 and tickets sold to zero
+max_tickets = 50
+sold_tickets = 0
+
+all_names, all_ticket_costs, all_ages, all_surcharge, all_payments = [], [], [], [], []
+
 while sold_tickets < max_tickets:
     # Asks for users name (checks if it is not blank
     name = not_blank("What is your first Name? ")
@@ -116,7 +127,6 @@ mini_movie_frame = pandas.DataFrame(mini_movie_dict)
 mini_movie_frame['Total'] = mini_movie_frame['Surcharge'] + mini_movie_frame['Ticket Price']
 mini_movie_frame["Profit"] = mini_movie_frame['Ticket Price'] - 5
 
-
 total = mini_movie_frame['Total'].sum()
 profit = mini_movie_frame['Ticket Price'] - 5
 
@@ -129,8 +139,7 @@ mini_movie_frame = mini_movie_frame.set_index('Name')
 # Print calculated items
 print(mini_movie_frame)
 
-
 profit_string = f"Total Ticket sales: {currency(total)}\t Total Profit: {currency(profit.sum())}"
-print(len(profit_string)*"-", "\n"+profit_string)
+print(len(profit_string) * "-", "\n" + profit_string)
 print("\n---- Raffle Winner ----")
 print(f"Congratulation {winner_name}. You have won {currency(total_won)}")

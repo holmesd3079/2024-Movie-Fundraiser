@@ -2,6 +2,12 @@ import pandas
 import random
 from datetime import date
 
+today = date.today()
+sh_date = f"{today.day}_{today.month}_{today.year}"
+filename = f"MF_{sh_date}"
+
+print(filename)
+
 
 def currency(x):
     return f"${format(x, '.2f')}"
@@ -31,8 +37,22 @@ mini_movie_frame = mini_movie_frame.set_index('Name')
 
 mini_movie_string = pandas.DataFrame.to_string(mini_movie_frame)
 
-print(mini_movie_frame)
-print("\n---- Raffle Winner ----")
-print(f"Congratulation {winner_name}. You have won {currency(total_won)}")
+total = mini_movie_frame['Total'].sum()
+profit = mini_movie_frame['Ticket Price'] - 5
 
-towrite = [f"Ticket cost / Profit\n{mini_movie_string}"]
+print(mini_movie_frame)
+print()
+winner_string = f"\n---- Raffle Winner ----\n" \
+                f"Congratulation {winner_name}. You have won {currency(total_won)}"
+print(winner_string)
+
+print("\n\n\n")
+to_write = f" ---- Mini Movie Fundraiser Ticket Data {filename} ----\nTicket cost / Profit\n{mini_movie_string}" \
+           f"\n\nTotal: {currency(total)} | Profit: {currency(profit.sum())} \n{winner_string}"
+
+print(to_write)
+
+text_file = open(f"{filename}.txt", "w+")
+
+text_file.write(to_write)
+text_file.close()
